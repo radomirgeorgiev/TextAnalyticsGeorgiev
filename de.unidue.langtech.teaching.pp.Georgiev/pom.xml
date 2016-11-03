@@ -66,6 +66,7 @@
   </build>
   <dependencyManagement>
   	<dependencies>
+  		
   		<dependency>
   			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   			<artifactId>de.tudarmstadt.ukp.dkpro.core-asl</artifactId>
@@ -73,6 +74,7 @@
   			<type>pom</type>
   			<scope>import</scope>
   		</dependency>
+  	
   	</dependencies>
   </dependencyManagement>
   <dependencies>
@@ -90,5 +92,11 @@
   			de.tudarmstadt.ukp.dkpro.core.tokit-asl
   		</artifactId>
   	</dependency>
+  		<dependency>
+  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  			<artifactId>
+  				de.tudarmstadt.ukp.dkpro.core.snowball-asl
+  			</artifactId>
+  		</dependency>
   </dependencies>
 </project>
