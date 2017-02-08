@@ -14,7 +14,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
-import de.unidue.langtech.teaching.pp.type.GoldLanguage;
+import de.unidue.langtech.teaching.pp.project.type.GoldLanguage;
 
 /**
  * Example of a simple reader that reads a text file 

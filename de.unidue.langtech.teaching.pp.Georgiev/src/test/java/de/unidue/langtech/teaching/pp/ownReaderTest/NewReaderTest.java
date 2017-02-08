@@ -1,6 +1,9 @@
 package de.unidue.langtech.teaching.pp.ownReaderTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +17,8 @@ import org.apache.uima.jcas.JCas;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.unidue.langtech.teaching.pp.type.GoldLanguage;
+import de.unidue.langtech.teaching.pp.project.type.GoldLanguage;
+
 
 public class NewReaderTest
 {

@@ -15,7 +15,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.unidue.langtech.teaching.pp.type.GoldLanguage;
+import de.unidue.langtech.teaching.pp.project.type.GoldLanguage;
+
 
 public class NewReaderSolution
     extends JCasCollectionReader_ImplBase

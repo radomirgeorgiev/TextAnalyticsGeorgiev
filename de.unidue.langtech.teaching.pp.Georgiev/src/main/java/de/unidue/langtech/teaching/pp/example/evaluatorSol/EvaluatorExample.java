@@ -7,8 +7,8 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 
-import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
-import de.unidue.langtech.teaching.pp.type.GoldLanguage;
+import de.unidue.langtech.teaching.pp.project.type.DetectedLanguage;
+import de.unidue.langtech.teaching.pp.project.type.GoldLanguage;
 
 public class EvaluatorExample
     extends JCasAnnotator_ImplBase

@@ -8,7 +8,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
+import de.unidue.langtech.teaching.pp.project.type.DetectedLanguage;
 
 /**
  * The baseline always identifies "EN" as the document language.

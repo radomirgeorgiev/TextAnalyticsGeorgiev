@@ -7,9 +7,9 @@ import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
-import de.unidue.langtech.teaching.pp.type.DetectedLanguage;
-import de.unidue.langtech.teaching.pp.type.GoldLanguage;
-import de.unidue.langtech.teaching.pp.type.MyType;
+import de.unidue.langtech.teaching.pp.project.type.DetectedLanguage;
+import de.unidue.langtech.teaching.pp.project.type.GoldLanguage;
+import de.unidue.langtech.teaching.pp.project.type.MyType;
 
 public class Printer
     extends JCasAnnotator_ImplBase

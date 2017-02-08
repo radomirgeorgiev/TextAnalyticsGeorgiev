@@ -4,7 +4,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.jcas.JCas;
 
-import de.unidue.langtech.teaching.pp.type.MyType;
+import de.unidue.langtech.teaching.pp.project.type.MyType;
 
 public class LetterAnnotator
     extends JCasAnnotator_ImplBase

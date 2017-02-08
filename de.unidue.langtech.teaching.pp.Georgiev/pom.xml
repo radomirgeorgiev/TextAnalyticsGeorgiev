@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.unidue.langtech.teaching.pp.Georgiev</groupId>
-  <artifactId>de.unidue.langtech.teaching.pp.Georgiev</artifactId>
+  <groupId>de.unidue.langtech.teaching.pp.example</groupId>
+  <artifactId>de.unidue.langtech.teaching.pp.example</artifactId>
   <version>0.0.1-SNAPSHOT</version>
     <repositories>
       <repository>
@@ -61,12 +61,11 @@
                     </lifecycleMappingMetadata>
                 </configuration>
             </plugin>
-        </plugins>
+       </plugins>
     </pluginManagement>
   </build>
   <dependencyManagement>
   	<dependencies>
-  		
   		<dependency>
   			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
   			<artifactId>de.tudarmstadt.ukp.dkpro.core-asl</artifactId>
@@ -74,7 +73,6 @@
   			<type>pom</type>
   			<scope>import</scope>
   		</dependency>
-  	
   	</dependencies>
   </dependencyManagement>
   <dependencies>
@@ -92,11 +90,52 @@
   			de.tudarmstadt.ukp.dkpro.core.tokit-asl
   		</artifactId>
   	</dependency>
-  		<dependency>
-  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  			<artifactId>
-  				de.tudarmstadt.ukp.dkpro.core.snowball-asl
-  			</artifactId>
-  		</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.snowball-asl
+  		</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.clearnlp-asl
+  		</artifactId>
+  	</dependency> 
+  	<dependency>
+  		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  		<artifactId>
+  			de.tudarmstadt.ukp.dkpro.core.morpha-asl
+  		</artifactId>
+  	</dependency>
+<!-- https://mvnrepository.com/artifact/de.tudarmstadt.ukp.dkpro.core/de.tudarmstadt.ukp.dkpro.core.api.io-asl -->
+	<dependency>
+   	 <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+   	 <artifactId>de.tudarmstadt.ukp.dkpro.core.api.io-asl</artifactId>
+	</dependency>
+
+        
+        <!-- https://mvnrepository.com/artifact/de.tudarmstadt.ukp.dkpro.core/de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl -->
+	<dependency>
+   	 <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+   	 <artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
+   	 <version>1.8.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/de.tudarmstadt.ukp.dkpro.core/de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl -->
+	<dependency>
+   	 <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+   	 <artifactId>de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl</artifactId>
+   	</dependency>
+   	
+<!-- https://mvnrepository.com/artifact/de.tudarmstadt.ukp.dkpro.core/de.tudarmstadt.ukp.dkpro.core.io.jwpl-asl -->
+<dependency>
+    <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    <artifactId>de.tudarmstadt.ukp.dkpro.core.io.jwpl-asl</artifactId>  
+</dependency>
+
+
+
+	
   </dependencies>
 </project>
