@@ -11,7 +11,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Thu Jan 26 15:30:53 CET 2017
+ * Updated by JCasGen Sat Mar 18 23:41:03 CET 2017
  * @generated */
 public class RawTextData_Type extends Annotation_Type {
   /** @generated */

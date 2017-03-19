@@ -13,8 +13,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Sun Feb 05 23:21:33 CET 2017
- * XML source: C:/Program Files/eclipse/workspace/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/DetectedLanguage.xml
+ * Updated by JCasGen Sat Mar 18 23:41:12 CET 2017
+ * XML source: /Users/biciani/Documents/workspace/TextAnalyticsGeorgiev/de.unidue.langtech.teaching.pp.Georgiev/src/main/resources/desc/type/DetectedLanguage.xml
  * @generated */
 public class DetectedLanguage extends Annotation {
   /** @generated

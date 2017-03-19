@@ -14,35 +14,43 @@ import org.apache.uima.jcas.JCas;
 
 import de.unidue.langtech.teaching.pp.project.type.DetectedLanguage;
 
+/**
+ * Sprachdetektor
+ */
 public class LanguageDetector extends JCasAnnotator_ImplBase {
 
 	private final double LAMBDA = 0.01;
+
 	private final int MIN_TOKENS_FROM_TEXT = 10;
+
 	private List<String> listOfTokenizedWordsFromText;
+
 	private String language;
+
 	private HashMap<String, List<Double>> counts;
+
 	private double compareToLambda;
 
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
-		// initialize the List of Words
+		// Inizialisiert die Liste listOfTokenizedWordsFromText
 		listOfTokenizedWordsFromText = new ArrayList<String>();
 
-		// The whole Text as List of Words
+		// Den ganzen Text als eine liste von Worte
 		try {
 			listOfTokenizedWordsFromText = Tokenizer.tokenize(jcas.getDocumentText());
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 
-		// initialize the HashMap with language suggestions & compareToLambda
+		// Initialisieren HashMap mit Sprachvorschaege & compareToLambda
 		counts = new HashMap<String, List<Double>>();
 		compareToLambda = 0.0;
-		
+
 		UnigramAnnotator uniA = new UnigramAnnotator();
 		List<Language> listOfDetectedCandidateLanguages = uniA.process(jcas, listOfTokenizedWordsFromText);
 		extract(listOfDetectedCandidateLanguages);
-		if (compareToLambda < LAMBDA  | tokenRange(listOfTokenizedWordsFromText.size())) {
+		if (compareToLambda < LAMBDA | tokenRange(listOfTokenizedWordsFromText.size())) {
 			BigramAnnotator biA = new BigramAnnotator();
 			listOfDetectedCandidateLanguages = biA.process(jcas, listOfTokenizedWordsFromText);
 			extract(listOfDetectedCandidateLanguages);
@@ -51,10 +59,16 @@ public class LanguageDetector extends JCasAnnotator_ImplBase {
 				listOfDetectedCandidateLanguages = trA.process(jcas, listOfTokenizedWordsFromText);
 				extract(listOfDetectedCandidateLanguages);
 			}
-		} 
+		}
 		writeCandidateLangugage(jcas, language);
 	}
 
+	/**
+	 * Extract.
+	 *
+	 * @param ll
+	 *            the ll
+	 */
 	private void extract(List<Language> ll) {
 
 		for (Language tempLanguage : ll) {
@@ -81,18 +95,27 @@ public class LanguageDetector extends JCasAnnotator_ImplBase {
 		compareToLambda = Math.abs(tempA - tempB);
 	}
 
+	/**
+	 * Sprachkandidaten fuer ein Objekt
+	 *
+	 * @param jcas
+	 * @param language
+	 */
 	private void writeCandidateLangugage(JCas jcas, String language) {
 		DetectedLanguage detectedLanguage = new DetectedLanguage(jcas);
 		detectedLanguage.setLanguage(language);
 		detectedLanguage.addToIndexes();
 		jcas.setDocumentLanguage(language);
 	}
-	
-	private boolean tokenRange(int lenghtOfList){
-		if(lenghtOfList<=MIN_TOKENS_FROM_TEXT){
-			return true;
-		}
-		return false;
+
+	/**
+	 * Pruefen ob die Tokens weniger als 10 sind
+	 *
+	 * @param lenghtOfList
+	 * @return true, wenn wahr,sonst false
+	 */
+	private boolean tokenRange(int lenghtOfList) {
+		return lenghtOfList <= MIN_TOKENS_FROM_TEXT;
 	}
 
 }

@@ -6,14 +6,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Klasse Tokenizer
+ */
 public class Tokenizer {
 
-    private static final String LETTER = "A-Za-zÖÄÜÎÊÔÛÂÀÒÙÈÌÁÓÚÉÍßàáâãäåæçèéêëìíîïğñòóôõöøùúûü'";
-    private static final String WHITESPACE = "\\n\\s\\t"; // \\s
+    private static final String LETTER = "A-Za-zÃ–Ã„ÃœÃÃŠÃ”Ã›Ã‚Ã€Ã’Ã™ÃˆÃŒÃÃ“ÃšÃ‰ÃÃŸÃ Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã±Ã²Ã³Ã´ÃµÃ¶Ã¸Ã¹ÃºÃ»uÌˆ";
+    
+    private static final String WHITESPACE = "\\n\\s\\t"; 
+    
     private static final String TOKENREGEX = "[" + LETTER + "]+";
+    
     private static final String SEPARATORREGEX = "[" + WHITESPACE + "]*";
+    
     private static List<String> tokens;
 
+    /**
+     * Tokenize
+     * Tokanieziert gegeben Text und speicher die Tokens in einer Liste
+     * @param input 
+     * @return die Liste
+     * @throws wirft eine UnsupportedEncodingException 
+     */
     public static List<String> tokenize(String input) throws UnsupportedEncodingException {
     
         tokens = new ArrayList<String>();

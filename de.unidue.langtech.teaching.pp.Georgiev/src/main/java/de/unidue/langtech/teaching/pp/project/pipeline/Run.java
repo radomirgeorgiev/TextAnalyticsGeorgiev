@@ -1,73 +1,95 @@
 package de.unidue.langtech.teaching.pp.project.pipeline;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
-import org.apache.uima.fit.component.CasDumpWriter;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.CollectionReaderFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordCoreferenceResolver;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordNamedEntityRecognizer;
+import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpChunker;
+import de.tudarmstadt.ukp.dkpro.core.snowball.SnowballStemmer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordParser;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
-import de.unidue.langtech.teaching.pp.project.detector.BigrammAnnotator;
-import de.unidue.langtech.teaching.pp.project.detector.Detector;
-import de.unidue.langtech.teaching.pp.project.detector.ReaderG;
-import de.unidue.langtech.teaching.pp.project.detector.TrigrammAnnotator;
-import de.unidue.langtech.teaching.pp.project.detector.UnigrammAnnotator;
 import de.unidue.langtech.teaching.pp.project.entityDetector.EntityDetector;
-import de.unidue.langtech.teaching.pp.project.eventDetector.EventDetector;
 import de.unidue.langtech.teaching.pp.project.languageDetector.LanguageDetector;
-import de.unidue.langtech.teaching.pp.project.reader.ExtractTextFromXML;
 import de.unidue.langtech.teaching.pp.project.reader.CollectionXMLReader;
-
+import de.unidue.langtech.teaching.pp.project.reader.TimeLineXMLParser;
 
 public class Run {
-	
-	  public static void main(String[] args)
-		        throws Exception
-		    {
-		    	 
-		    	
-		    	//DetectorFactory.loadProfile("../seminar2016_uni-due/profiles");
-		        String inputFolder = "/Volumes/Macintosh HD/Users/biciani/Desktop/SemEval_Task4_data/corpus_1/corpus_trackA_CAT";
-		    
-		        // Read all files with file ending *.xml that are located in the inputFolder
-		        CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
-		                CollectionXMLReader.class, CollectionXMLReader.PARAM_SOURCE_LOCATION, inputFolder,
-		                CollectionXMLReader.PARAM_PATTERNS, new String[] { "*.xml"});
+	// Hauptmethode
+	public static void main(String[] args) throws Exception {
 
-		        //Extracting the Raw Text from XML File
-		        
-		        CollectionReaderDescription simpleR = CollectionReaderFactory.createReaderDescription(ReaderG.class, ReaderG.PARAM_INPUT_FILE,
-						"src/test/resources/test/test.txt");
-		        AnalysisEngineDescription xmlR = AnalysisEngineFactory.createEngineDescription(ExtractTextFromXML.class);
-		        AnalysisEngineDescription langD = AnalysisEngineFactory.createEngineDescription(LanguageDetector.class);
+		String inputPartA = "data/corpus_";
+		String inputPartB = "/corpus_trackB_CAT";
 
-		        AnalysisEngineDescription printA = AnalysisEngineFactory.createEngineDescription(PrinterAll.class);
-		        AnalysisEngineDescription seg = AnalysisEngineFactory.createEngineDescription(StanfordSegmenter.class);
-		        AnalysisEngineDescription parser = AnalysisEngineFactory.createEngineDescription(StanfordParser.class);
-		        AnalysisEngineDescription pos = AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class);
-		        AnalysisEngineDescription lem = AnalysisEngineFactory.createEngineDescription(StanfordLemmatizer.class);
-		        AnalysisEngineDescription namER = AnalysisEngineFactory.createEngineDescription(StanfordNamedEntityRecognizer.class);
-		        AnalysisEngineDescription sCorR = AnalysisEngineFactory.createEngineDescription(StanfordCoreferenceResolver.class);
-		        AnalysisEngineDescription depE = AnalysisEngineFactory.createEngineDescription(DependencyExtractor.class);
-		        AnalysisEngineDescription evDet = AnalysisEngineFactory.createEngineDescription(EventDetector.class);
-		        AnalysisEngineDescription writer = AnalysisEngineFactory.createEngineDescription(CasDumpWriter.class);
-		      
+		// ruft die Methode zum Löschen von Ergebnissen von bestimmten Files vor
+		// Berechnungen
 
+		eraseData();
 
-		        // A demo that shows some basic accessing of the framework API and how to get access to the
-		        // information in the tweets
+		for (int i = 1; i < 4; i++) {
+			writeCorpusID(i);
 
-		        //This framework has many more modules that might become useful for you (depending on your task)
-		        //An entire list can be found here https://code.google.com/p/dkpro-core-asl/wiki/ComponentList_1_6_2
+			String corpus = inputPartA + i + inputPartB;
+			System.out.println("Analysiere Korpus: " + i);
+			// Lese alle Files mit einer Endung *.xml, die im inputFolder
+			// geladen sind
+			CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(
+					CollectionXMLReader.class, CollectionXMLReader.PARAM_SOURCE_LOCATION, corpus,
+					CollectionXMLReader.PARAM_PATTERNS, new String[] { "*.xml" });
 
-		        SimplePipeline.runPipeline(reader, xmlR, langD, seg, parser, pos, namER, evDet, printA);
-		    }
+			// Lade Komponenten :
 
+			// Selbst geschriebenen Modul,das Raw Text von XML File exrtahiere
+			AnalysisEngineDescription tlXML = AnalysisEngineFactory.createEngineDescription(TimeLineXMLParser.class);
+			// Selbst geschriebenen Modul,das Language ermitteln
+			AnalysisEngineDescription langD = AnalysisEngineFactory.createEngineDescription(LanguageDetector.class);
+			// Open NLP Chunker
+			AnalysisEngineDescription chun = AnalysisEngineFactory.createEngineDescription(OpenNlpChunker.class);
+			// Stanford Segmenter
+			AnalysisEngineDescription seg = AnalysisEngineFactory.createEngineDescription(StanfordSegmenter.class);
+			// Stanford Parser
+			AnalysisEngineDescription parser = AnalysisEngineFactory.createEngineDescription(StanfordParser.class);
+			// Stanford POS Tagger
+			AnalysisEngineDescription pos = AnalysisEngineFactory.createEngineDescription(StanfordPosTagger.class);
+			// Snownall Stemmer
+			AnalysisEngineDescription stem = AnalysisEngineFactory.createEngineDescription(SnowballStemmer.class);
+			// Selbst geschriebenen Modul,das Entities ermitteln
+			AnalysisEngineDescription entDet = AnalysisEngineFactory.createEngineDescription(EntityDetector.class);
+
+			SimplePipeline.runPipeline(reader, tlXML, langD, seg, parser, pos, chun, stem, entDet);
+			System.out.println("Analyse Korpus " + i + " fertig!");
+		}
+		// Kreiere eine neue Instanz zu der PrintEvaluationResult und
+		// ruft die methode printResult um die Endergebnisse auszudrucken
+		new PrintEvaluationResult().printResult();
+	}
+
+	// Schreib in File corpusID, die Nummer von dem Corpus der abgearbeitet
+	// wurde
+	private static void writeCorpusID(int corpusID) throws FileNotFoundException {
+		String filePath = "src/test/resources/storage/";
+		String file = "corpusID";
+		PrintWriter writer = new PrintWriter(filePath + file);
+		writer.print(corpusID);
+		writer.close();
+	}
+
+	// Löscht die Daten von bestimmten Files
+	private static void eraseData() throws IOException {
+		String filePath = "src/test/resources/storage/";
+		String[] files = { "storageDocuments.ser", "storageEvents.ser", "storageResult1.ser", "storageResult2.ser",
+				"storageResult3.ser", "storageEntity.ser" };
+		for (int i = 0; i < files.length; i++) {
+			PrintWriter writer = new PrintWriter(filePath + files[i]);
+			writer.print("");
+			writer.close();
+		}
+	}
 
 }

@@ -12,8 +12,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Thu Jan 26 15:30:53 CET 2017
- * XML source: C:/Users/Nivelin Stoyanov/workspace/de.unidue.langtech.teaching.pp.example/src/main/resources/desc/type/RawTextData.xml
+ * Updated by JCasGen Sat Mar 18 23:41:03 CET 2017
+ * XML source: /Users/biciani/Documents/workspace/TextAnalyticsGeorgiev/de.unidue.langtech.teaching.pp.Georgiev/src/main/resources/desc/type/RawTextData.xml
  * @generated */
 public class RawTextData extends Annotation {
   /** @generated

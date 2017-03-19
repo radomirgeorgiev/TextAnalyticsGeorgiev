@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +30,10 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 	private String encoding;
 
 	private int currentReaderIdx = 0;
-	private static String[] filePaths = null;
-	private static List<String> entities;
-	private static int collectionSize, tempIndex;
-	private static List<String> lines;
+	private String[] filePaths = null;
+	private List<String> entities;
+	private int collectionSize, tempIndex;
+	private List<String> lines;
 	private BufferedReader reader = null;
 	private RawXMLData raw;
 	private static StringArray strA, strB;
@@ -40,11 +41,10 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		
+
 		try {
 			initFileWithEntities();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		initFileStreamsForAllFiles();
@@ -65,7 +65,6 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 			throw new IllegalStateException(e);
 		}
 		filePaths = files.toArray(new String[0]);
-		collectionSize = filePaths.length;
 	}
 
 	private BufferedReader initReader(String s) throws IOException {
@@ -86,15 +85,13 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 		return new InputStreamReader(new FileInputStream(file), encoding);
 	}
 
+	@Override
 	public boolean hasNext() throws IOException, CollectionException {
-		tempIndex = currentReaderIdx;
-		if (currentReaderIdx == filePaths.length) {
-			return false;
+
+		if (currentReaderIdx < filePaths.length) {
+			return filePaths[currentReaderIdx] != null;
 		}
-		BufferedReader reader = getReader(currentReaderIdx);
-		lines = new ArrayList<String>();
-		lines = reader.lines().collect(Collectors.toList());
-		return takeNextReader();
+		return false;
 
 	}
 
@@ -106,14 +103,6 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 		return reader;
 	}
 
-	private boolean takeNextReader() throws IOException, CollectionException {
-		reader.close();
-		reader = null;
-		filePaths[currentReaderIdx] = null;
-		currentReaderIdx++;
-		return true;
-	}
-
 	public Progress[] getProgress() {
 		return null;
 	}
@@ -121,7 +110,8 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 	@Override
 	public void getNext(JCas jcas) throws IOException, CollectionException {
 
-		// annotate raw-xml in an own type we
+		reader = getReader(currentReaderIdx);
+		lines = reader.lines().collect(Collectors.toList());
 
 		raw = new RawXMLData(jcas);
 		entityExtract(jcas);
@@ -131,11 +121,20 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 		raw.setCollectionSize(collectionSize);
 		raw.setTempIndex(tempIndex);
 		raw.addToIndexes();
-		// Set Document Language as "unspecifed"
+
+		// Setzt Dokumentsprache auf "unspecifed"
 		jcas.setDocumentLanguage("x-unspecified");
+
+		reader.close();
+		reader = null;
+		filePaths[currentReaderIdx] = null;
+		currentReaderIdx++;
+
+		eraseData();
+		System.out.println("Lese Dokument Nummer: " + currentReaderIdx);
 	}
 
-	private static void entityExtract(JCas jcas) {
+	private void entityExtract(JCas jcas) {
 		strA = new StringArray(jcas, entities.size());
 		strB = new StringArray(jcas, collectionSize);
 		for (int i = 0; i < entities.size(); i++) {
@@ -149,6 +148,17 @@ public class CollectionXMLReader extends JCasResourceCollectionReader_ImplBase {
 			temp += str.concat("\n");
 		}
 		return temp;
+	}
+
+	// Löscht die Daten von bestimmten Files
+	private void eraseData() throws IOException {
+		String filePath = "src/test/resources/storage/";
+		String[] files = { "storageEntity.ser" };
+		for (int i = 0; i < files.length; i++) {
+			PrintWriter writer = new PrintWriter(filePath + files[i]);
+			writer.print("");
+			writer.close();
+		}
 	}
 
 }
